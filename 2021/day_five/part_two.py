@@ -26,7 +26,7 @@ def get_greatest_values(coordinate_list):
             greatest_x = int(x2)
     return greatest_x, greatest_y
 
-with open('example_coordinates.txt', 'r') as doc:
+with open('vent_coordinates.txt', 'r') as doc:
     # list contains a sub-list of tuple coordinates
     # x1, y1 : origin
     # x2, y2 : end
@@ -111,9 +111,78 @@ with open('example_coordinates.txt', 'r') as doc:
                 else:
                     pseudo_map[y2][num] = [1]
 
+        # log diagonal lines
         if x1 != x2 and y1 != y2:
-            # log diagonal lines into pseudo_map
-            pass
+            # downward diagonal
+            mapped_origin_point = pseudo_map[y1][x1]
+            mapped_end_point = pseudo_map[y2][x2]
+            # add start and end point to map
+            if len(mapped_origin_point) > 0 or len(mapped_end_point) > 0:
+                pseudo_map[y1][x1] = [sum(pseudo_map[y1][x1] + [1])]        # start point
+                pseudo_map[y2][x2] = [sum(pseudo_map[y2][x2] + [1])]           # end point
+            else:
+                pseudo_map[y1][x1] = [1]          # start point
+                pseudo_map[y2][x2] = [1]            # end point
+
+            # add missing diagonal points
+            if y1 < y2:
+                # downward right diagonal
+                if x1 < x2:
+                    diag_x = x1 + 1
+                    diag_y = y1 + 1
+                    while diag_x != x2 and diag_y != y2:
+                        if len(pseudo_map[diag_y][diag_x]) > 0:
+                            pseudo_map[diag_y][diag_x] = [sum(pseudo_map[diag_y][diag_x] + [1])]
+                            diag_x += 1
+                            diag_y += 1
+                        else:
+                            pseudo_map[diag_y][diag_x] = [1]
+                            diag_x += 1
+                            diag_y += 1
+
+                # downward left diagonal
+                else:
+                    diag_x = x1 - 1
+                    diag_y = y1 + 1
+                    while diag_x != x2 and diag_y != y2:
+                        if len(pseudo_map[diag_y][diag_x]) > 0:
+                            pseudo_map[diag_y][diag_x] = [sum(pseudo_map[diag_y][diag_x] + [1])]
+                            diag_x -= 1
+                            diag_y += 1
+                        else:
+                            pseudo_map[diag_y][diag_x] = [1]
+                            diag_x -= 1
+                            diag_y += 1
+            
+            # upward diagonal
+            if y1 > y2:
+                # upward right diagonal
+                if x1 < x2:
+                    diag_x = x1 + 1
+                    diag_y = y1 - 1
+                    while diag_x != x2 and diag_y != y2:
+                        if len(pseudo_map[diag_y][diag_x]) > 0:
+                            pseudo_map[diag_y][diag_x] = [sum(pseudo_map[diag_y][diag_x] + [1])]
+                            diag_x += 1
+                            diag_y -= 1
+                        else:
+                            pseudo_map[diag_y][diag_x] = [1]
+                            diag_x += 1
+                            diag_y -= 1
+
+                # upward left diagonal
+                else:
+                    diag_x = x1 - 1
+                    diag_y = y1 - 1
+                    while diag_x != x2 and diag_y != y2:
+                        if len(pseudo_map[diag_y][diag_x]) > 0:
+                            pseudo_map[diag_y][diag_x] = [sum(pseudo_map[diag_y][diag_x] + [1])]
+                            diag_x -= 1
+                            diag_y -= 1
+                        else:
+                            pseudo_map[diag_y][diag_x] = [1]
+                            diag_x -= 1
+                            diag_y -= 1
 
     # pprint(pseudo_map)
     overlap_count = 0
