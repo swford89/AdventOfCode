@@ -14,16 +14,16 @@ with open('fuel_position.txt', 'r') as doc:
     # get highest and lowest furl position values to iterate goal position between
     highest_position = max(position_list)
     lowest_position = min(position_list)
-    for goal_position in range(lowest_position, highest_position):
+    for goal_position in range(lowest_position + 1, highest_position):
         # track fuel cost to get position to current goal and reset for next goal positon
         fuel_cost_list = []
         for position in position_list:
             if position > goal_position:
                 fuel_difference = position - goal_position 
                 fuel_cost_list.append(fuel_difference)
-            if position == goal_position:
+            elif position == goal_position:
                 fuel_cost_list.append(0)
-            if position < goal_position:
+            elif position < goal_position:
                 fuel_difference = goal_position - position
                 fuel_cost_list.append(fuel_difference)
 
